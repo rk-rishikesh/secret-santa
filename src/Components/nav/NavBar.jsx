@@ -77,7 +77,7 @@ const Navbar = () => {
       <div className="w-full flex justify-between items-center max-w-7x1 mx-auto">
         <Link to="/" onClick={refreshPage}>
           <img
-            src="/src/assets/logo/santa-logo.png"
+            src="/santa-logo.png"
             alt="appLogo"
             className="w-18 h-9 object-contain"
           />
