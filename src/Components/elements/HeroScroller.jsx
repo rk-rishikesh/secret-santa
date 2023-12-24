@@ -6,6 +6,7 @@ import {
 } from "../../Constants/christmasTree";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { ethers } from "ethers";
+import { TwitterShareButton } from "react-share";
 import "./HeroButton.css";
 import "./CopyCard.css";
 
@@ -16,6 +17,7 @@ const HeroScroller = () => {
   const [formStatus, setFormStatus] = useState(false); //false:closed true:open
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tokenID, setTokenID] = useState(0)
 
   useEffect(() => {
     const parseURL = async (url) => {
@@ -46,6 +48,7 @@ const HeroScroller = () => {
       }
 
       const tokenID = await tree.userTree(signer.address);
+      setTokenID(tokenID)
       const uri = await tree.tokenURI(tokenID);
       const parsedTree = await parseURL(uri);
       console.log(parsedTree);
@@ -154,7 +157,6 @@ const HeroScroller = () => {
     return metadataUrl;
   };
 
-
   if (loading) {
     return (
       <>
@@ -164,78 +166,86 @@ const HeroScroller = () => {
         >
           <div class="container w-[450px]">
             <div className="bg-grayscale-950 flex items-center justify-center relative">
-              <img src="https://cdn.pixabay.com/animation/2022/12/23/16/22/16-22-13-468_512.gif" alt=""/>
+              <img
+                src="https://cdn.pixabay.com/animation/2022/12/23/16/22/16-22-13-468_512.gif"
+                alt=""
+              />
             </div>
           </div>
         </div>
       </>
     );
   } else {
-  return (
-    <div
-      id="scroller"
-      className="absolute xs:bottom-10 bottom-12 flex justify-center items-center pb-16"
-    >
-      {exist && <img src="/xmastree.png" />}
-
-      {!exist && (
-        <div className="w-[35-px] h-[64px] rounded-3xl border-4 border-primary-400 flex justify-center items-start p-2">
-          <div>
-            <button class="btnn" onClick={openForm}>
-              <i></i>🎄 Mint My Tree 🎄<i></i>
-            </button>
-          </div>
-        </div>
-      )}
-
-      {formStatus && (
-        <div
-          className="dropdown-backdrop min-w-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover"
-          id="modal-id"
-        >
-          <div class="container w-[450px]">
-            <div class="heading">YOUR PROFILE NFT</div>
-            <form class="form" action="">
-              <input
-                placeholder="Enter Username"
-                id="username"
-                name="username"
-                type="text"
-                class="input"
-                required=""
-                onChange={(e) => setName(e.target.value)}
-              />
-            </form>
-            <img
-              className="mt-4 rounded-xl"
-              src="/profileNFT.webp"
-              alt="Christmas Tree"
-            />
-            <button class="login-button" onClick={handleCreate}>
-              🎄 CREATE PARTY 🎄
-            </button>
-          </div>
-        </div>
-      )}
+    return (
       <div
         id="scroller"
-        className="absolute xs:bottom-10 bottom-12 flex justify-center items-center"
+        className="absolute xs:bottom-10 bottom-12 flex justify-center items-center pb-16"
       >
-        {exist && window.location.pathname == "/" && (
-          <div class="cardCollection">
-            <div class="cardCollectionimg">
-              <img src="https://branditechture.agency/brand-logos/wp-content/uploads/2023/07/X-by-Twitter.png" alt=""/>
-            </div>
-            <div class="cardCollectiontextBox">
-              <div class="cardCollectiontextContent">
-                <p class="cardCollectionh1">{description} Link</p>
-              </div>
+        {exist && <img src="/xmastree.png" />}
+
+        {!exist && (
+          <div className="w-[35-px] h-[64px] rounded-3xl border-4 border-primary-400 flex justify-center items-start p-2">
+            <div>
+              <button class="btnn" onClick={openForm}>
+                <i></i>🎄 Mint My Tree 🎄<i></i>
+              </button>
             </div>
           </div>
         )}
+
+        {formStatus && (
+          <div
+            className="dropdown-backdrop min-w-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover"
+            id="modal-id"
+          >
+            <div class="container w-[450px]">
+              <div class="heading">YOUR PROFILE NFT</div>
+              <form class="form" action="">
+                <input
+                  placeholder="Enter Username"
+                  id="username"
+                  name="username"
+                  type="text"
+                  class="input"
+                  required=""
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </form>
+              <img
+                className="mt-4 rounded-xl"
+                src="/profileNFT.webp"
+                alt="Christmas Tree"
+              />
+              <button class="login-button" onClick={handleCreate}>
+                🎄 CREATE PARTY 🎄
+              </button>
+            </div>
+          </div>
+        )}
+        <div
+          id="scroller"
+          className="absolute xs:bottom-10 bottom-12 flex justify-center items-center"
+        >
+          {exist && window.location.pathname == "/" && (
+            <>
+              <TwitterShareButton
+                title={`Secret Santa the #web3 way 🎁\n\nI just minted my Christmas Tree NFT which is enabled with #ERC6551 and ready to receive your message NFT, drop your message and gifts on my Christmas Tree 🎄`}
+                url={`https://thesecretsantofweb3.vercel.app/${tokenID}`}
+              >
+                <button class="connectbutton relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-black rounded-[16px] bg-gradient-to-t from-[#8122b0] to-[#dc98fd] active:scale-95">
+                  <span class="w-full h-full flex items-center gap-2 px-8 py-3 bg-[#B931FC] text-[#f1d5fe] rounded-[14px] bg-gradient-to-t from-[#a62ce2] to-[#c045fc]">
+                    
+                    Share {description} on 
+                    <img className="w-8" src="https://cdn.freelogovectors.net/wp-content/uploads/2023/07/twitter-x-logo-freelogovectors.net_.png" alt=""/>
+                  </span>
+                </button>
+              </TwitterShareButton>
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  );}
+    );
+  }
 };
 
 export default HeroScroller;

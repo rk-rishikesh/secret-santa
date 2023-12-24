@@ -1,8 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useIPFS } from "../helper/IPFS";
 import { TokenboundClient } from "@tokenbound/sdk";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { MESSAGEADDRESS, MESSAGEABI } from "../../Constants/message";
+import {
+  CHRISTMASTREEADDRESS,
+  CHRISTMASTREEABI,
+} from "../../Constants/christmasTree";
 import { ethers } from "ethers";
 import "./HeroButton.css";
 import "./Form.css";
@@ -20,10 +24,58 @@ const HeroButton = () => {
   const [loading, setLoading] = useState(false);
   const [coupon, setCoupon] = useState(0);
   const [messageURI, setMessageURI] = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    const parseURL = async (url) => {
+      const data = await fetch(url);
+      const json = await data.json();
+      console.log(json);
+      return json;
+    };
+
+    const checkHasTree = async () => {
+      const provider = await detectEthereumProvider({ silent: true });
+      console.log(provider);
+      const ethereum = await window.ethereum;
+
+      const signer = await new ethers.BrowserProvider(ethereum).getSigner();
+      console.log(signer);
+
+      const tree = new ethers.Contract(
+        CHRISTMASTREEADDRESS,
+        CHRISTMASTREEABI,
+        signer
+      );
+
+      let tokenID = window.location.pathname;
+      tokenID = tokenID.slice(1);
+      console.log(tokenID);
+
+      if(tokenID > await tree.tokenCount()) {
+        setDescription("")
+      } else {
+        const uri = await tree.tokenURI(tokenID);
+        const parsedTree = await parseURL(uri);
+        console.log(parsedTree);
+        console.log(parsedTree.description);
+        setDescription(parsedTree.description);
+      }
+    };
+
+    checkHasTree();
+  }, []);
 
   const enterForm = async () => {
     setDone(true);
   };
+
+  function refreshPage() {
+    setTimeout(()=>{
+        window.location.reload(false);
+    }, 500);
+    console.log('page to reload')
+}
 
   const secretSanta = async () => {
     setLoading(true);
@@ -45,9 +97,8 @@ const HeroButton = () => {
     })
 
     const account = await tokenboundClient.getAccount({
-      tokenContract: "0xb179B97FC6319173f3b199522Dabe69d60bce0Bf",
+      tokenContract: "0x087d5Af875cdC1C8FE2a4F67035054eD2b6c0349",
       tokenId: tokenID,
-      implementationAddress: "0xBf7F4beb68b960AE198a15f4f50247f4Fd20E21a",
     });
 
     console.log(account);
@@ -101,6 +152,7 @@ const HeroButton = () => {
 
     setLoading(false);
     setDone(false);
+    refreshPage();
   };
 
   const enterMarketplace = async () => {
@@ -132,7 +184,7 @@ const HeroButton = () => {
 
   async function getStickerOne() {
     const imageOriginUrl =
-      "https://www.iconarchive.com/download/i8695/double-j-design/xmas-stickers/xmas-sticker-mistletoe.ico";
+      "https://icons.iconarchive.com/icons/double-j-design/xmas-stickers/128/xmas-sticker-mistletoe-icon.png";
     const r = await fetch(imageOriginUrl);
     if (!r.ok) {
       throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -142,7 +194,7 @@ const HeroButton = () => {
 
   async function getStickerTwo() {
     const imageOriginUrl =
-      "https://www.iconarchive.com/download/i8693/double-j-design/xmas-stickers/xmas-sticker-reindeer.ico";
+      "https://icons.iconarchive.com/icons/double-j-design/xmas-stickers/256/xmas-sticker-reindeer-icon.png";
     const r = await fetch(imageOriginUrl);
     if (!r.ok) {
       throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -253,9 +305,17 @@ const HeroButton = () => {
             >
               <div className="w-[35-px] h-[64px] rounded-3xl border-4 border-primary-400 flex justify-center items-start p-2">
                 <div>
+                  { description != "" &&
                   <button class="btnn" onClick={enterForm}>
-                    <i></i>🎄 Drop Message 🎄<i></i>
+                    <i></i>🎄 Drop Message At {description}🎄<i></i>
                   </button>
+                  } 
+                  {
+                    description == "" && 
+                    <button class="btnn" onClick={enterForm}>
+                    <i></i>🎄 404: Tree Doesn't Exisit🎄<i></i>
+                  </button>
+                  }
                 </div>
               </div>
 

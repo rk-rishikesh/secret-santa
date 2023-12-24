@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import MarqueeCards from "../Components/MarqueeCards";
 import SectionTitle from "../Components/SectionTitle";
 import SkillsCards from "../Components/SkillsCards";
+import { TokenboundClient } from "@tokenbound/sdk";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { ethers } from "ethers";
 import {
   CHRISTMASTREEABI,
   CHRISTMASTREEADDRESS,
 } from "../Constants/christmasTree";
+import { MESSAGEABI, MESSAGEADDRESS } from "../Constants/message";
 const Skills = (
 ) => {
   const [hasTree, setHasTree] = useState(false);
@@ -27,11 +29,46 @@ const Skills = (
         signer
       );
 
-      console.log(await tree.balanceOf(signer.address));
-      if ((await tree.balanceOf(signer.address)) >= 1) {
-        console.log(true)
-        setHasTree(true);
+      let tokenID = window.location.pathname;
+      tokenID = tokenID.slice(1);
+      console.log(tokenID);
+
+      if(tokenID != "") {
+
+        // Its Drop Message Page
+        const msg = new ethers.Contract(
+          MESSAGEADDRESS,
+          MESSAGEABI,
+          signer
+        );
+
+        const tokenboundClient = new TokenboundClient({
+          signer, 
+          chainId: 80001, 
+          implementationAddress: '0xBf7F4beb68b960AE198a15f4f50247f4Fd20E21a',
+          registryAddress: '0x284be69BaC8C983a749956D7320729EB24bc75f9',
+        })
+    
+        const account = await tokenboundClient.getAccount({
+          tokenContract: CHRISTMASTREEADDRESS,
+          tokenId: tokenID,
+        });
+    
+        console.log(account);
+
+        console.log(await msg.balanceOf(account));
+        if(await msg.balanceOf(account) >=1) {
+          setHasTree(true);
+        }
+      } else {
+        console.log(await tree.balanceOf(signer.address));
+        if ((await tree.balanceOf(signer.address)) >= 1) {
+          console.log(true)
+          setHasTree(true);
+        }
       }
+
+      
     };
     checkHasTree();
   }, []);
@@ -58,7 +95,6 @@ const Skills = (
           </div>
         </div>
       )}
-      {true && <></>}
     </>
   );
 };
