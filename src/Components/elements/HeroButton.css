@@ -1,0 +1,22 @@
+.btnn {
+  outline: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 200px;
+  border: 0;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  overflow: hidden;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.dropdown-backdrop {
+    backdrop-filter: blur(5px) contrast(.8);
+}

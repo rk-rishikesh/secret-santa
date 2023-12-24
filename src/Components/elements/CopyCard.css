@@ -1,0 +1,66 @@
+.cardCollection {
+  width: 100vh;
+  max-width: 350px;
+  height: 90px;
+  background: #353535;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  transition: 0.5s ease-in-out;
+}
+
+.cardCollection:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.cardCollectionimg {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  border-radius: 10px;
+  background: linear-gradient(#d7cfcf, #9198e5);
+}
+
+.cardCollection:hover > .cardCollectionimg {
+  transition: 0.5s ease-in-out;
+  background: linear-gradient(#9198e5, #712020);
+}
+
+.cardCollectiontextBox {
+  width: calc(100% - 90px);
+  margin-left: 10px;
+  color: white;
+  font-family: "Poppins" sans-serif;
+}
+
+.cardCollectiontextContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.span {
+  font-size: 10px;
+}
+
+.cardCollectionh1 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cardCollectionp {
+  font-size: 12px;
+  font-weight: lighter;
+}
+
+@keyframes checkAnim {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: 10px;
+  }
+}
