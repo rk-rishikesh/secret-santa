@@ -65,6 +65,8 @@ const SkillsCards = () => {
       console.log(nfts.ownedNfts);
       console.log(nfts.ownedNfts.length);
 
+      let skillList = []
+
       for (let i = 0; i < nfts.ownedNfts.length; i++) {
 
         console.log(nfts.ownedNfts[i].contract.address);
@@ -79,24 +81,18 @@ const SkillsCards = () => {
         });
 
         const msgnfts = await alchemy.nft.getNftsForOwner(msgaccount);
-        console.log(msgnfts.ownedNfts[0].name)
+        console.log(msgnfts)
+        console.log(msgnfts.ownedNfts[0].image.originalUrl)
 
-        // Print NFTs
-        console.log(msgnfts.ownedNfts);
-        console.log(msgnfts.ownedNfts.length);
-        console.log(msgnfts.ownedNfts[i].description);
-        console.log(msgnfts.ownedNfts[i].image.originalUrl);
-
-        setSkills([
-          ...skills,
-          {
-            name: nfts.ownedNfts[i].name,
-            description: nfts.ownedNfts[i].description,
-            image: nfts.ownedNfts[i].image.originalUrl,
-            couponURI: msgnfts.ownedNfts[i].image.originalUrl
-          },
-        ]);
+        skillList.push({
+          name: nfts.ownedNfts[i].name,
+          description: nfts.ownedNfts[i].description,
+          image: nfts.ownedNfts[i].image.originalUrl,
+          couponURI: msgnfts.ownedNfts[0].image.originalUrl
+        })
       }
+      console.log(skillList)
+      setSkills(skillList)
     };
     init();
   }, []);
