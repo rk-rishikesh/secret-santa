@@ -182,7 +182,7 @@ const SkillsCards = () => {
                 {skill.name}
               </span>
               <img
-                className="w-28 flex justify-center items-center  bg-primary-600  p-1 object-contain"
+                className="w-28 flex justify-center items-center rounded-[20%] bg-primary-600  p-1 object-contain"
                 src={skill.couponURI}
                 alt="Christmas Tree"
               />
