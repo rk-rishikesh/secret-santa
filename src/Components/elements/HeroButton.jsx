@@ -422,7 +422,7 @@ const HeroButton = () => {
                       {/* <img className="rounded-lg h-32" src="https://images.squarespace-cdn.com/content/v1/52094b1be4b0f6f84d966b0f/1604518263825-SIY4XI0I3V8Q7ANGSXYO/blog-gift-guide-animation-no-title.gif" alt=""/> */}
                       <img
                         className="rounded-lg h-32 w-[100vh]"
-                        src="src/assets/avatar/coupon.png"
+                        src="/coupon.png"
                         alt=""
                       />
                     </div>
