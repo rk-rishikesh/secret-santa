@@ -3,7 +3,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 import { ethers } from "ethers";
 import { Link } from "react-router-dom";
 import { styles } from "../../styles.js";
-import "./Button.css";
+import "./button.css";
 
 const Navbar = () => {
   const [account, setAccount] = useState("");
