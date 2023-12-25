@@ -26,7 +26,7 @@ function App() {
         <div>
           <img
             className="w-[100vh] h-[100vh]"
-            src="https://static.vecteezy.com/system/resources/previews/004/010/353/non_2x/merry-christmas-background-template-with-christmas-tree-free-vector.jpg"
+            src="/desktop.png"
             alt=""
           />
         </div>

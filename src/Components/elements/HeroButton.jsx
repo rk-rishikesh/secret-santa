@@ -12,7 +12,6 @@ import "./HeroButton.css";
 import "./Form.css";
 
 const HeroButton = () => {
-
   const { IPFSupload } = useIPFS();
   const inputFileRef = useRef(null);
   const [done, setDone] = useState(false);
@@ -25,6 +24,7 @@ const HeroButton = () => {
   const [coupon, setCoupon] = useState(0);
   const [messageURI, setMessageURI] = useState("");
   const [description, setDescription] = useState("");
+  const [exist, setExists] = useState(false);
 
   useEffect(() => {
     const parseURL = async (url) => {
@@ -52,10 +52,14 @@ const HeroButton = () => {
       tokenID = tokenID.slice(1);
       console.log(tokenID);
 
-      if(tokenID > await tree.tokenCount()) {
-        setDescription("")
+      if (tokenID > (await tree.tokenCount())) {
+        console.log("Hello");
+        setExists(false);
       } else {
+        setExists(true);
+        console.log("Helloooo");
         const uri = await tree.tokenURI(tokenID);
+        console.log(uri);
         const parsedTree = await parseURL(uri);
         console.log(parsedTree);
         console.log(parsedTree.description);
@@ -71,11 +75,11 @@ const HeroButton = () => {
   };
 
   function refreshPage() {
-    setTimeout(()=>{
-        window.location.reload(false);
+    setTimeout(() => {
+      window.location.reload(false);
     }, 500);
-    console.log('page to reload')
-}
+    console.log("page to reload");
+  }
 
   const secretSanta = async () => {
     setLoading(true);
@@ -90,11 +94,11 @@ const HeroButton = () => {
     console.log(signer);
 
     const tokenboundClient = new TokenboundClient({
-      signer, 
-      chainId: 80001, 
-      implementationAddress: '0xBf7F4beb68b960AE198a15f4f50247f4Fd20E21a',
-      registryAddress: '0x284be69BaC8C983a749956D7320729EB24bc75f9',
-    })
+      signer,
+      chainId: 80001,
+      implementationAddress: "0xBf7F4beb68b960AE198a15f4f50247f4Fd20E21a",
+      registryAddress: "0x284be69BaC8C983a749956D7320729EB24bc75f9",
+    });
 
     const account = await tokenboundClient.getAccount({
       tokenContract: "0x087d5Af875cdC1C8FE2a4F67035054eD2b6c0349",
@@ -105,7 +109,7 @@ const HeroButton = () => {
 
     // MessageURI
     let msgURI = "https://ipfs.io/ipfs/" + messageURI.slice(7);
-    console.log(msgURI)
+    console.log(msgURI);
 
     // Coupon
     let couponURI = "";
@@ -123,20 +127,18 @@ const HeroButton = () => {
         "https://ipfs.io/ipfs/bafkreihvpz2ny3xly3jibvd6v6rz5ijzs7qmlnofopbkoohgks2vxnrepm";
     }
 
-    console.log(couponURI)
+    console.log(couponURI);
 
     const provider = await detectEthereumProvider({ silent: true });
     console.log(provider);
 
-    const msg = new ethers.Contract(
-      MESSAGEADDRESS,
-      MESSAGEABI,
-      signer
-    );
+    const msg = new ethers.Contract(MESSAGEADDRESS, MESSAGEABI, signer);
 
-    console.log("Account : " + account + "\n",
+    console.log(
+      "Account : " + account + "\n",
       "Message URI : " + msgURI + "\n",
-      "CouponURI : " + couponURI+ "\n")
+      "CouponURI : " + couponURI + "\n"
+    );
 
     const transaction = await msg.mintMessageWithGiftNFT(
       account,
@@ -305,17 +307,25 @@ const HeroButton = () => {
             >
               <div className="w-[35-px] h-[64px] rounded-3xl border-4 border-primary-400 flex justify-center items-start p-2">
                 <div>
-                  { description != "" &&
-                  <button class="btnn" onClick={enterForm}>
-                    <i></i>🎄 Drop Message At {description}🎄<i></i>
-                  </button>
-                  } 
-                  {
-                    description == "" && 
+                  {exist && (
+                    <>
+                      {description == "" && (
+                        <button class="btnn" onClick={enterForm}>
+                          <i></i>🎄 Drop Message🎄<i></i>
+                        </button>
+                      )}
+                      {description != "" && (
+                        <button class="btnn" onClick={enterForm}>
+                          <i></i>🎄 Drop Message At {description}🎄<i></i>
+                        </button>
+                      )}
+                    </>
+                  )}
+                  {!exist && (
                     <button class="btnn" onClick={enterForm}>
-                    <i></i>🎄 404: Tree Doesn't Exisit🎄<i></i>
-                  </button>
-                  }
+                      <i></i>🎄 404: Tree Doesn't Exisit🎄<i></i>
+                    </button>
+                  )}
                 </div>
               </div>
 

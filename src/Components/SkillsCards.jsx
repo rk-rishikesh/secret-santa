@@ -19,6 +19,10 @@ const SkillsCards = () => {
   };
   const alchemy = new Alchemy(config);
 
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noreferrer");
+  };
+
   useEffect(() => {
     const init = async () => {
       const provider = await detectEthereumProvider({ silent: true });
@@ -65,10 +69,9 @@ const SkillsCards = () => {
       console.log(nfts.ownedNfts);
       console.log(nfts.ownedNfts.length);
 
-      let skillList = []
+      let skillList = [];
 
       for (let i = 0; i < nfts.ownedNfts.length; i++) {
-
         console.log(nfts.ownedNfts[i].contract.address);
         console.log(nfts.ownedNfts[i].name);
         console.log(nfts.ownedNfts[i].description);
@@ -81,18 +84,20 @@ const SkillsCards = () => {
         });
 
         const msgnfts = await alchemy.nft.getNftsForOwner(msgaccount);
-        console.log(msgnfts)
-        console.log(msgnfts.ownedNfts[0].image.originalUrl)
+        console.log(msgnfts);
+        console.log(msgnfts.ownedNfts[0].image.originalUrl);
 
         skillList.push({
+          tokenID: nfts.ownedNfts[i].tokenId,
           name: nfts.ownedNfts[i].name,
           description: nfts.ownedNfts[i].description,
           image: nfts.ownedNfts[i].image.originalUrl,
-          couponURI: msgnfts.ownedNfts[0].image.originalUrl
-        })
+          couponID: msgnfts.ownedNfts[0].tokenId,
+          couponURI: msgnfts.ownedNfts[0].image.originalUrl,
+        });
       }
-      console.log(skillList)
-      setSkills(skillList)
+      console.log(skillList);
+      setSkills(skillList);
     };
     init();
   }, []);
@@ -112,10 +117,10 @@ const SkillsCards = () => {
               ease: "linear",
             }}
             style={{ zIndex: 1, transition: "all 0.6s" }}
-            className="card w-[300px] h-[300px] flex flex-col items-center  bg-primary-400 rounded-xl border-4 border-primary-600 cursor-pointer"
+            className="card w-[300px] h-[350px] flex flex-col items-center  bg-primary-400 rounded-xl border-4 border-primary-600 cursor-pointer"
           >
-            <div className="w-full h-[60px] flex items-center gap-2 p-1 flex-col">
-              <img
+            <div className="w-full h-[80px] flex items-center gap-2 p-1 flex-col">
+              {/* <img
                 className="h-[50px] flex justify-center items-center w-[50px]  bg-primary-600 rounded-[50%] p-1 object-contain"
                 src="https://gallery.yopriceville.com/var/albums/Free-Clipart-Pictures/Christmas-PNG/Decorative_Christmas_Tree_PNG_Clip_Art.png?m=1540252135"
                 alt="Christmas Tree"
@@ -142,6 +147,20 @@ const SkillsCards = () => {
                 }}
               >
                 Description
+              </span> */}
+
+              <img
+                src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/6a3edb109253591.5fcfbcdd1504b.gif"
+                alt=""
+              />
+              <span
+                className="text-center bg-primary-400 text-grayscale-950 rounded-xl text-sm p-4"
+                style={{
+                  fontFamily: "Poppins, sans-serif",
+                  fontWeight: "400",
+                }}
+              >
+                Secret Santa Gifts Are On The Way
               </span>
             </div>
           </m.div>
@@ -160,14 +179,23 @@ const SkillsCards = () => {
             }}
             style={{ zIndex: `${index + 1}`, transition: "all 0.6s" }}
             key={index}
-            className="card w-[300px] h-[350px] flex flex-col items-center  bg-primary-400 rounded-xl border-4 border-primary-600 cursor-pointer"
+            className="card w-[300px] h-[380px] flex flex-col items-center  bg-primary-400 rounded-xl border-4 border-primary-600 cursor-pointer"
           >
             <div className="w-full h-[60px] flex items-center gap-2 p-1 flex-col">
-              <img
-                className="h-[120px] flex justify-center items-center w-[120px]  bg-primary-600 rounded-[50%] p-1 object-contain"
-                src={skill.image}
-                alt=""
-              />
+              <button
+                role="link"
+                onClick={() =>
+                  openInNewTab(
+                    `https://testnets.opensea.io/assets/mumbai/${MESSAGEADDRESS}/${skill.tokenID}`
+                  )
+                }
+              >
+                <img
+                  className="h-[120px] flex justify-center items-center w-[120px]  bg-primary-600 rounded-[50%] p-1 object-contain"
+                  src={skill.image}
+                  alt=""
+                />
+              </button>
               <span
                 className="text-xl"
                 style={{
@@ -177,11 +205,20 @@ const SkillsCards = () => {
               >
                 {skill.name}
               </span>
-              <img
-                className="w-28 flex justify-center items-center rounded-[20%] bg-primary-600  p-1 object-contain"
-                src={skill.couponURI}
-                alt="Christmas Tree"
-              />
+              <button
+                role="link"
+                onClick={() =>
+                  openInNewTab(
+                    `https://testnets.opensea.io/assets/mumbai/0x5256A67D9d7905471623A943b0A573AF492fb8e8/${skill.couponID}`
+                  )
+                }
+              >
+                <img
+                  className="w-28 flex justify-center items-center rounded-[20%] bg-primary-600  p-1 object-contain"
+                  src={skill.couponURI}
+                  alt="Christmas Tree"
+                />
+              </button>
               <span
                 className="text-center bg-primary-400 text-grayscale-950 rounded-xl text-sm p-4"
                 style={{

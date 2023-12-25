@@ -17,7 +17,7 @@ const HeroScroller = () => {
   const [formStatus, setFormStatus] = useState(false); //false:closed true:open
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tokenID, setTokenID] = useState(0)
+  const [tokenID, setTokenID] = useState(0);
 
   useEffect(() => {
     const parseURL = async (url) => {
@@ -48,7 +48,7 @@ const HeroScroller = () => {
       }
 
       const tokenID = await tree.userTree(signer.address);
-      setTokenID(tokenID)
+      setTokenID(tokenID);
       const uri = await tree.tokenURI(tokenID);
       const parsedTree = await parseURL(uri);
       console.log(parsedTree);
@@ -228,18 +228,35 @@ const HeroScroller = () => {
         >
           {exist && window.location.pathname == "/" && (
             <>
-              <TwitterShareButton
-                title={`Secret Santa the #web3 way 🎁\n\nI just minted my Christmas Tree NFT which is enabled with #ERC6551 and ready to receive your message NFT, drop your message and gifts on my Christmas Tree 🎄`}
-                url={`https://thesecretsantofweb3.vercel.app/${tokenID}`}
-              >
+              {description == "" && (
                 <button class="connectbutton relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-black rounded-[16px] bg-gradient-to-t from-[#8122b0] to-[#dc98fd] active:scale-95">
                   <span class="w-full h-full flex items-center gap-2 px-8 py-3 bg-[#B931FC] text-[#f1d5fe] rounded-[14px] bg-gradient-to-t from-[#a62ce2] to-[#c045fc]">
-                    
-                    Share {description} on 
-                    <img className="w-8" src="https://cdn.freelogovectors.net/wp-content/uploads/2023/07/twitter-x-logo-freelogovectors.net_.png" alt=""/>
+                    Fetching Your Tree
+                    <img
+                      className="w-8"
+                      src="https://cdn.freelogovectors.net/wp-content/uploads/2023/07/twitter-x-logo-freelogovectors.net_.png"
+                      alt=""
+                    />
                   </span>
                 </button>
-              </TwitterShareButton>
+              )}
+              {description != "" && (
+                <TwitterShareButton
+                  title={`Secret Santa the #web3 way 🎁\n\nI just minted my Christmas Tree NFT which is enabled with #ERC6551 and ready to receive your message NFT, drop your message and gifts on my Christmas Tree 🎄`}
+                  url={`https://thesecretsantofweb3.vercel.app/${tokenID}`}
+                >
+                  <button class="connectbutton relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-black rounded-[16px] bg-gradient-to-t from-[#8122b0] to-[#dc98fd] active:scale-95">
+                    <span class="w-full h-full flex items-center gap-2 px-8 py-3 bg-[#B931FC] text-[#f1d5fe] rounded-[14px] bg-gradient-to-t from-[#a62ce2] to-[#c045fc]">
+                      Share {description} on
+                      <img
+                        className="w-8"
+                        src="https://cdn.freelogovectors.net/wp-content/uploads/2023/07/twitter-x-logo-freelogovectors.net_.png"
+                        alt=""
+                      />
+                    </span>
+                  </button>
+                </TwitterShareButton>
+              )}
             </>
           )}
         </div>
