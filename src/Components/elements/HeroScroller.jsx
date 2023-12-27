@@ -134,7 +134,7 @@ const HeroScroller = () => {
 
   async function getExampleImage() {
     const imageOriginUrl =
-      "https://img.stablecog.com/insecure/1920w/aHR0cHM6Ly9iLnN0YWJsZWNvZy5jb20vZWYxMDIyYTgtZmZlNi00NjQzLTg5M2UtNWFmODUyZWU2MjQ0LmpwZWc.webp";
+      "/main.png";
     const r = await fetch(imageOriginUrl);
     if (!r.ok) {
       throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -145,6 +145,7 @@ const HeroScroller = () => {
   const uploadMetadata = async (name, description) => {
     console.log("== Uploading Metadata == ");
     const img = await getExampleImage();
+    console.log("Img Here : ", img);
     const metadataUrl = await IPFSupload(
       {
         name: name,

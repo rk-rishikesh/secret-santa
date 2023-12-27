@@ -17,6 +17,7 @@ const SkillsCards = () => {
     apiKey: "w-aEgDPKbBnk4gB9MO8v10gpeJcE0lWY",
     network: Network.MATIC_MUMBAI,
   };
+
   const alchemy = new Alchemy(config);
 
   const openInNewTab = (url) => {
