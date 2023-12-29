@@ -186,7 +186,7 @@ const HeroButton = () => {
 
   async function getStickerOne() {
     const imageOriginUrl =
-      "https://icons.iconarchive.com/icons/double-j-design/xmas-stickers/128/xmas-sticker-mistletoe-icon.png";
+      "/stickerOne.png";
     const r = await fetch(imageOriginUrl);
     if (!r.ok) {
       throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -196,7 +196,7 @@ const HeroButton = () => {
 
   async function getStickerTwo() {
     const imageOriginUrl =
-      "https://icons.iconarchive.com/icons/double-j-design/xmas-stickers/256/xmas-sticker-reindeer-icon.png";
+      "/stickerTwo.png";
     const r = await fetch(imageOriginUrl);
     if (!r.ok) {
       throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -206,7 +206,7 @@ const HeroButton = () => {
 
   async function getStickerThree() {
     const imageOriginUrl =
-      "https://icons.iconarchive.com/icons/double-j-design/xmas-stickers/128/xmas-sticker-tree-icon.png";
+      "/stickerThree.png";
     const r = await fetch(imageOriginUrl);
     if (!r.ok) {
       throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
@@ -216,7 +216,7 @@ const HeroButton = () => {
 
   async function getStickerFour() {
     const imageOriginUrl =
-      "https://www.iconarchive.com/download/i8698/double-j-design/xmas-stickers/xmas-sticker-snowman.128.png";
+      "/stickerFour.png";
     const r = await fetch(imageOriginUrl);
     if (!r.ok) {
       throw new Error(`error fetching image: [${r.statusCode}]: ${r.status}`);
